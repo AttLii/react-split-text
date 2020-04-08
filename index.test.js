@@ -121,4 +121,30 @@ describe("SplitText-component", () => {
 
     expect(spaceElements.length).toBe(spacesWithProvidedClassName);
   });
+
+  /**
+   * This test has a flaw that cannot fixed right now.
+   * Selecting text content that is &npbs; returns what we have in defaultSpaceHTML variable.
+   * @https://github.com/enzymejs/enzyme/issues/1349
+   **/
+  it("uses default spaceHTML-value if not specified in props", () => {
+    const sentence = "Foo bar";
+    const defaultSpaceHTML = "\u00a0";
+
+    const component = mount(<SplitText>{sentence}</SplitText>);
+    const spaceElement = component.find(".space")
+    
+    expect(spaceElement.text()).toEqual(defaultSpaceHTML);
+  })
+
+  it("uses passed in spaceHTML-prop as a space-character", () => {
+    const sentence = "Foo bar banana";
+    const spaceHTML = "FOO_BANANAS"
+
+    const component = mount(<SplitText spaceHTML={spaceHTML}>{sentence}</SplitText>);
+
+    const spaceElements = component.find(".space")
+    expect(spaceElements.at(0).text()).toEqual("FOO_BANANAS");
+    expect(spaceElements.at(1).text()).toEqual("FOO_BANANAS");
+  })
 });

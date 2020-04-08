@@ -56,6 +56,7 @@ exports[`SplitText-component renders with no props 1`] = `
   }
   className=""
   spaceClassName=""
+  spaceHTML="&nbsp;"
   type="div"
   wordClassName=""
   wordRefs={

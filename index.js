@@ -9,6 +9,7 @@ const SplitText = forwardRef((props, ref) => {
     spaceClassName,
     children,
     type,
+    spaceHTML,
     wordRefs,
     charRefs,
     ...rest
@@ -44,7 +45,6 @@ const SplitText = forwardRef((props, ref) => {
 
   const spaceCN = `space ${spaceClassName}`;
   const spaceType = "span";
-  const spaceHTML = "&#160;";
 
   // space is rendered using this element
   const spaceElement = createElement(
@@ -123,6 +123,7 @@ SplitText.defaultProps = {
   wordClassName: "",
   charClassName: "",
   spaceClassName: "",
+  spaceHTML: "&nbsp;",
   type: "div",
   wordRefs: {
     current: []
@@ -138,6 +139,7 @@ SplitText.propTypes = {
   wordClassName: PropTypes.string,
   charClassName: PropTypes.string,
   spaceClassName: PropTypes.string,
+  spaceHTML: PropTypes.string,
   type: PropTypes.string,
   wordRefs: PropTypes.shape({
     current: PropTypes.array
