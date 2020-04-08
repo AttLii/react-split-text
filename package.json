@@ -1,40 +1,40 @@
 {
-  "name": "arha-split-text",
-  "version": "1.0.5",
-  "description": "A react component that splits passed in `children`-prop into word-spans and each word-span into character-spans. This lets developers do f.e. word / character based animations for text-elements.",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest --config ./jest.config.json",
-    "test:watch": "jest --config ./jest.config.json --watchAll"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AttLii/react-split-text.git"
-  },
-  "keywords": [
-    "react",
-    "split",
-    "text"
-  ],
-  "author": "Atte Liimatainen (atte.liimat@gmail.com)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AttLii/react-split-text/issues"
-  },
-  "homepage": "https://github.com/AttLii/react-split-text#readme",
-  "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-react": "^7.9.4",
-    "babel-jest": "^25.2.6",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "enzyme-to-json": "^3.4.4",
-    "jest": "^25.2.7",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  }
+	"name": "arha-split-text",
+	"version": "1.0.6",
+	"description": "A react component that splits passed in `children`-prop into word-spans and each word-span into character-spans. This lets developers do f.e. word / character based animations for text-elements.",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest --config ./jest.config.json",
+		"test:watch": "jest --config ./jest.config.json --watchAll"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AttLii/react-split-text.git"
+	},
+	"keywords": [
+		"react",
+		"split",
+		"text"
+	],
+	"author": "Atte Liimatainen (atte.liimat@gmail.com)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/AttLii/react-split-text/issues"
+	},
+	"homepage": "https://github.com/AttLii/react-split-text#readme",
+	"peerDependencies": {
+		"prop-types": "^15.7.2",
+		"react": "^16.13.1"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.9.0",
+		"@babel/preset-react": "^7.9.4",
+		"babel-jest": "^25.2.6",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"enzyme-to-json": "^3.4.4",
+		"jest": "^25.2.7",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1"
+	}
 }

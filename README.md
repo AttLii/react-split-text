@@ -93,11 +93,14 @@ an output would be:
 | -------------- | ------------- | --------------------------------------------------------------------------------------- |
 | children       | string        | text wanted to be split                                                                 |
 | className      | string        | className passed to wrapper element                                                     |
-| type           | string        | wrapper element's type, f.e. `"h1"` or `"p"`                                            |
+| type           | string        | wrapper element's type, f.e. `"h1"` or `"p"`. By default `div`                          |
 | wordClassName  | string        | className set to each word element                                                      |
+| wordType       | string        | word elements' type, f.e. `"h1"` or `"p"`. By default `span`                            |
 | charClassName  | string        | className set to each character element                                                 |
+| charType       | string        | char elements' type, f.e. `"h1"` or `"p"`. By default `span`                            |
 | spaceClassName | string        | className set to each space element                                                     |
-| spaceHTML      | string        | a character that is used as a text content for each space element. (default `&nbsp;`)   |
+| spaceType      | string        | space elements' type, f.e. `"h1"` or `"p"`. By default `span`                           |
+| spaceHTML      | string        | a character that is used as a text content for each space element. by default `&nbsp;`  |
 | wordRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
 | charRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
 | ...rest        |               | rest of the props are spread to wrapper element                                         |

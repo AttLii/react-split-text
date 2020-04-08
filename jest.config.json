@@ -1,4 +1,4 @@
 {
-  "testRegex": "((\\.|/*.)(test))\\.js?$",
-  "snapshotSerializers": ["enzyme-to-json/serializer"]
+	"testRegex": "((\\.|/*.)(test))\\.js?$",
+	"snapshotSerializers": ["enzyme-to-json/serializer"]
 }
