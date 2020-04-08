@@ -53,6 +53,7 @@ an output would be:
 | wordClassName  | string        | className set to each word element                                                      |
 | charClassName  | string        | className set to each character element                                                 |
 | spaceClassName | string        | className set to each space element                                                     |
+| spaceHTML      | string        | a character that is used as a text content for each space element. (default `&nbsp;`)   |
 | wordRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
 | charRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
 | ...rest        |               | rest of the props are spread to wrapper element                                         |
