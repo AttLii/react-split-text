@@ -4,10 +4,17 @@ exports[`SplitText-component renders correctly with foo children-prop 1`] = `
 <div
   aria-label="foo"
   className="c-split-text "
+  style={
+    Object {
+      "display": "inline-flex",
+      "flexWrap": "wrap",
+    }
+  }
 >
   <span
     aria-hidden={true}
     className="word "
+    data-word="foo"
     style={
       Object {
         "display": "inline-block",
@@ -60,6 +67,12 @@ exports[`SplitText-component renders with no props 1`] = `
   <div
     aria-label=""
     className="c-split-text "
+    style={
+      Object {
+        "display": "inline-flex",
+        "flexWrap": "wrap",
+      }
+    }
   />
 </ForwardRef>
 `;

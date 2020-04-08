@@ -59,6 +59,20 @@ describe("SplitText-component", () => {
     expect(spaceElements.length).toBe(spaceAmount);
   });
 
+  it("creates space element at the end of each word element, except last one", () => {
+    const sentence = "Foo bar baz";
+
+    const component = mount(<SplitText>{sentence}</SplitText>);
+    const spaceElementParents = component.find(".space").parent();
+
+    const firstParent = spaceElementParents.at(0)
+    expect(firstParent.prop("data-word")).toBe("Foo");
+    const secondParent = spaceElementParents.at(1)
+    expect(secondParent.prop("data-word")).toBe("bar");
+    const shouldntExist = spaceElementParents.at(2)
+    expect(shouldntExist.exists()).toBeFalsy()
+  })
+
   it("passes className-prop to wrapper element", () => {
     const className = "foo";
     const wrapper = shallow(<SplitText className={className} />);

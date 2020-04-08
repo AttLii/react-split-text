@@ -15,18 +15,36 @@ const SplitText = forwardRef((props, ref) => {
   } = props;
 
   const wrapperCN = `c-split-text ${className}`;
+  const wrapperProps = {
+    "aria-label": children,
+    className: wrapperCN, 
+    ref,
+    style: {
+      display: "inline-flex",
+      flexWrap: "wrap"
+    },
+    ...rest,
+  }
+
 
   const wordDefaultCN = "word";
-  const wordCN = `${wordDefaultCN} ${wordClassName}`;
   const wordType = "span";
+  const wordProps = {
+    "aria-hidden": true,
+    className: `${wordDefaultCN} ${wordClassName}`,
+    style: { display: "inline-block" }
+  }
 
   const charDefaultCN = "char";
-  const charCN = `${charDefaultCN} ${charClassName}`;
   const charType = "span";
+  const charProps = {
+    className: `${charDefaultCN} ${charClassName}`,
+    "aria-hidden": true,
+  }
 
   const spaceCN = `space ${spaceClassName}`;
   const spaceType = "span";
-  const spaceHTML = "&nbsp;";
+  const spaceHTML = "&#160;";
 
   // space is rendered using this element
   const spaceElement = createElement(
@@ -34,7 +52,8 @@ const SplitText = forwardRef((props, ref) => {
     {
       "aria-hidden": true,
       className: spaceCN,
-      dangerouslySetInnerHTML: { __html: spaceHTML }
+      dangerouslySetInnerHTML: { __html: spaceHTML },
+      style: { display: "inline-block" }
     },
     null
   );
@@ -62,39 +81,38 @@ const SplitText = forwardRef((props, ref) => {
   // wrapper element
   return createElement(
     type,
-    { "aria-label": children, className: wrapperCN, ref, ...rest },
-    children.split(" ").map((word, i) => {
-      const space = !i ? null : spaceElement;
-      return word === ""
-        ? null
-        : createElement(
-            Fragment,
-            { key: i },
+    wrapperProps,
+    children.split(" ").map((word, i, words) => {
+      if (word === "") return ""
+      
+      const space = i === words.length - 1 
+        ? null 
+        : spaceElement
+
+      return createElement(
+        Fragment,
+        {
+          key: i
+        },
+        createElement(
+          wordType,
+          {
+            ...wordProps,
+            "data-word": word,
+          },
+          word.split("").map((char, i) =>
             createElement(
-              Fragment,
-              null,
-              space,
-              createElement(
-                wordType,
-                {
-                  "aria-hidden": true,
-                  className: wordCN,
-                  style: { display: "inline-block" }
-                },
-                word.split("").map((char, i) =>
-                  createElement(
-                    charType,
-                    {
-                      className: charCN,
-                      "aria-hidden": true,
-                      key: i
-                    },
-                    char
-                  )
-                )
-              )
+              charType,
+              {
+                ...charProps,
+                key: i
+              },
+              char
             )
-          );
+          ),
+          space
+        )
+      );
     })
   );
 });
