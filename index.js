@@ -1,5 +1,5 @@
-import { createElement, Fragment, forwardRef, useEffect } from "react";
-import PropTypes from "prop-types"
+const { createElement, Fragment, forwardRef, useEffect } = require("react");
+const PropTypes = require("prop-types")
 
 const SplitText = forwardRef((props, ref) => {
   const {
@@ -129,4 +129,4 @@ SplitText.propTypes = {
   })
 }
 
-export default SplitText;
+module.exports = SplitText;
