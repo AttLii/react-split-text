@@ -1,152 +1,170 @@
-const { createElement, Fragment, forwardRef, useEffect } = require("react");
+const { createElement, Fragment, forwardRef, useEffect } = require("react")
 const PropTypes = require("prop-types")
 
 const SplitText = forwardRef((props, ref) => {
-  const {
-    className,
-    wordClassName,
-    charClassName,
-    spaceClassName,
-    children,
-    type,
-    spaceHTML,
-    wordRefs,
-    charRefs,
-    ...rest
-  } = props;
+	const {
+		children,
 
-  const wrapperCN = `c-split-text ${className}`;
-  const wrapperProps = {
-    "aria-label": children,
-    className: wrapperCN, 
-    ref,
-    style: {
-      display: "inline-flex",
-      flexWrap: "wrap"
-    },
-    ...rest,
-  }
+		className,
+		type,
 
+		wordClassName,
+		wordType,
 
-  const wordDefaultCN = "word";
-  const wordType = "span";
-  const wordProps = {
-    "aria-hidden": true,
-    className: `${wordDefaultCN} ${wordClassName}`,
-    style: { display: "inline-block" }
-  }
+		charClassName,
+		charType,
 
-  const charDefaultCN = "char";
-  const charType = "span";
-  const charProps = {
-    className: `${charDefaultCN} ${charClassName}`,
-    "aria-hidden": true,
-  }
+		spaceClassName,
+		spaceType,
+		spaceHTML,
 
-  const spaceCN = `space ${spaceClassName}`;
-  const spaceType = "span";
+		wordRefs,
+		charRefs,
 
-  // space is rendered using this element
-  const spaceElement = createElement(
-    spaceType,
-    {
-      "aria-hidden": true,
-      className: spaceCN,
-      dangerouslySetInnerHTML: { __html: spaceHTML },
-      style: { display: "inline-block" }
-    },
-    null
-  );
+		...rest
+	} = props
 
-  // sending refs to parent component
-  useEffect(() => {
-    if (!ref || !ref.current) return;
+	const wrapperCN = `c-split-text ${className}`
+	const wrapperProps = {
+		"aria-label": children,
+		className: wrapperCN,
+		ref,
+		style: {
+			display: "inline-flex",
+			flexWrap: "wrap"
+		},
+		...rest
+	}
 
-    const wrapper = ref.current;
-    const words = Array.from(wrapper.querySelectorAll(`.${wordDefaultCN}`));
-    if (words.length === 0) return;
-    wordRefs.current = words;
+	const wordDefaultCN = "word"
+	const wordProps = {
+		"aria-hidden": true,
+		className: `${wordDefaultCN} ${wordClassName}`,
+		style: { display: "inline-block" }
+	}
 
-    const chars = Array.from(wrapper.querySelectorAll(`.${charDefaultCN}`));
-    if (chars.length === 0) return;
-    charRefs.current = chars;
+	const charDefaultCN = "char"
+	const charProps = {
+		className: `${charDefaultCN} ${charClassName}`,
+		"aria-hidden": true
+	}
 
-    // clean parent component's refs on dismount
-    return () => {
-      wordRefs.current = [];
-      charRefs.current = [];
-    };
-  }, [ref, wordRefs, charRefs, wordDefaultCN, charDefaultCN]);
+	const spaceCN = `space ${spaceClassName}`
+	// space is rendered using this element
+	const spaceElement = createElement(
+		spaceType,
+		{
+			"aria-hidden": true,
+			className: spaceCN,
+			dangerouslySetInnerHTML: { __html: spaceHTML },
+			style: { display: "inline-block" }
+		},
+		null
+	)
 
-  // wrapper element
-  return createElement(
-    type,
-    wrapperProps,
-    children.split(" ").map((word, i, words) => {
-      if (word === "") return ""
-      
-      const space = i === words.length - 1 
-        ? null 
-        : spaceElement
+	// sending refs to parent component
+	useEffect(() => {
+		if (!ref || !ref.current) return
 
-      return createElement(
-        Fragment,
-        {
-          key: i
-        },
-        createElement(
-          wordType,
-          {
-            ...wordProps,
-            "data-word": word,
-          },
-          word.split("").map((char, i) =>
-            createElement(
-              charType,
-              {
-                ...charProps,
-                key: i
-              },
-              char
-            )
-          ),
-          space
-        )
-      );
-    })
-  );
-});
+		const wrapper = ref.current
+		const words = Array.from(wrapper.querySelectorAll(`.${wordDefaultCN}`))
+		if (words.length === 0) return
+		wordRefs.current = words
+
+		const chars = Array.from(wrapper.querySelectorAll(`.${charDefaultCN}`))
+		if (chars.length === 0) return
+		charRefs.current = chars
+
+		// clean parent component's refs on dismount
+		return () => {
+			wordRefs.current = []
+			charRefs.current = []
+		}
+	}, [ref, wordRefs, charRefs, wordDefaultCN, charDefaultCN])
+
+	// wrapper element
+	return createElement(
+		type,
+		wrapperProps,
+		children.split(" ").map((word, i, words) => {
+			if (word === "") return ""
+
+			const space = i === words.length - 1 ? null : spaceElement
+
+			return createElement(
+				Fragment,
+				{
+					key: i
+				},
+				createElement(
+					wordType,
+					{
+						...wordProps,
+						"data-word": word
+					},
+					word.split("").map((char, i) =>
+						createElement(
+							charType,
+							{
+								...charProps,
+								key: i
+							},
+							char
+						)
+					),
+					space
+				)
+			)
+		})
+	)
+})
 
 SplitText.defaultProps = {
-  children: "",
-  className: "",
-  wordClassName: "",
-  charClassName: "",
-  spaceClassName: "",
-  spaceHTML: "&nbsp;",
-  type: "div",
-  wordRefs: {
-    current: []
-  },
-  charRefs: {
-    current: []
-  }
-};
+	children: "",
 
-SplitText.propTypes = {
-  children: PropTypes.string,
-  className: PropTypes.string,
-  wordClassName: PropTypes.string,
-  charClassName: PropTypes.string,
-  spaceClassName: PropTypes.string,
-  spaceHTML: PropTypes.string,
-  type: PropTypes.string,
-  wordRefs: PropTypes.shape({
-    current: PropTypes.array
-  }),
-  charRefs: PropTypes.shape({
-    current: PropTypes.array
-  })
+	className: "",
+	type: "div",
+
+	wordClassName: "",
+	wordType: "span",
+
+	charClassName: "",
+	charType: "span",
+
+	spaceClassName: "",
+	spaceType: "span",
+	spaceHTML: "&nbsp;",
+
+	wordRefs: {
+		current: []
+	},
+	charRefs: {
+		current: []
+	}
 }
 
-module.exports = SplitText;
+SplitText.propTypes = {
+	children: PropTypes.string,
+
+	className: PropTypes.string,
+	type: PropTypes.string,
+
+	wordClassName: PropTypes.string,
+	wordType: PropTypes.string,
+
+	charClassName: PropTypes.string,
+	charType: PropTypes.string,
+
+	spaceClassName: PropTypes.string,
+	spaceType: PropTypes.string,
+	spaceHTML: PropTypes.string,
+
+	wordRefs: PropTypes.shape({
+		current: PropTypes.array
+	}),
+	charRefs: PropTypes.shape({
+		current: PropTypes.array
+	})
+}
+
+module.exports = SplitText

@@ -54,9 +54,11 @@ exports[`SplitText-component renders with no props 1`] = `
       "current": Array [],
     }
   }
+  charType="span"
   className=""
   spaceClassName=""
   spaceHTML="&nbsp;"
+  spaceType="span"
   type="div"
   wordClassName=""
   wordRefs={
@@ -64,6 +66,7 @@ exports[`SplitText-component renders with no props 1`] = `
       "current": Array [],
     }
   }
+  wordType="span"
 >
   <div
     aria-label=""
