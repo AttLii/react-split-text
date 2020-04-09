@@ -6,8 +6,7 @@ exports[`SplitText-component renders correctly with foo children-prop 1`] = `
   className="c-split-text "
   style={
     Object {
-      "display": "inline-flex",
-      "flexWrap": "wrap",
+      "display": "block",
     }
   }
 >
@@ -17,7 +16,7 @@ exports[`SplitText-component renders correctly with foo children-prop 1`] = `
     data-word="foo"
     style={
       Object {
-        "display": "inline-block",
+        "display": "inline-flex",
       }
     }
   >
@@ -73,8 +72,7 @@ exports[`SplitText-component renders with no props 1`] = `
     className="c-split-text "
     style={
       Object {
-        "display": "inline-flex",
-        "flexWrap": "wrap",
+        "display": "block",
       }
     }
   />

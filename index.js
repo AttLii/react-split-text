@@ -30,8 +30,7 @@ const SplitText = forwardRef((props, ref) => {
 		className: wrapperCN,
 		ref,
 		style: {
-			display: "inline-flex",
-			flexWrap: "wrap"
+			display: "block"
 		},
 		...rest
 	}
@@ -40,7 +39,9 @@ const SplitText = forwardRef((props, ref) => {
 	const wordProps = {
 		"aria-hidden": true,
 		className: `${wordDefaultCN} ${wordClassName}`,
-		style: { display: "inline-block" }
+		style: {
+			display: "inline-flex"
+		}
 	}
 
 	const charDefaultCN = "char"
