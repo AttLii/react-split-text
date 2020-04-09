@@ -1,6 +1,6 @@
 {
 	"name": "arha-split-text",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "A react component that splits passed in `children`-prop into word-spans and each word-span into character-spans. This lets developers do f.e. word / character based animations for text-elements.",
 	"main": "index.js",
 	"scripts": {
