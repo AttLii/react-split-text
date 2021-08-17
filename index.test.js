@@ -1,7 +1,7 @@
+import 'jsdom-global/register'
 import React from "react"
-import Enzyme, { shallow, mount, render } from "enzyme"
-import Adapter from "enzyme-adapter-react-16"
-import jest from "jest"
+import Enzyme, { shallow, mount } from "enzyme"
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 import SplitText from "./index"
 
