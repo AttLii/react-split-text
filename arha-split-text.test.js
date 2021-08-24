@@ -115,4 +115,8 @@ describe("SplitText-component", () => {
 		)
 		expect(component).toMatchSnapshot()
 	})
+
+	it("fails", () => {
+		expect(true).toEqual(false)
+	})
 })
