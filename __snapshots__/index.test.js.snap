@@ -1,80 +1,217 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SplitText-component renders correctly with foo children-prop 1`] = `
-<div
-  aria-label="foo"
-  className="c-split-text "
-  style={
-    Object {
-      "display": "block",
-    }
-  }
+exports[`SplitText-component CharElement-prop has access to current character's index inside the word if its a function component 1`] = `
+<div>
+  <div>
+    <span>
+      <span>
+        current index of the character inside the word: 0
+      </span>
+      f
+    </span>
+    <span>
+      <span>
+        current index of the character inside the word: 1
+      </span>
+      o
+    </span>
+    <span>
+      <span>
+        current index of the character inside the word: 2
+      </span>
+      o
+    </span>
+  </div>
+</div>
+`;
+
+exports[`SplitText-component Doesn't crash with no props 1`] = `null`;
+
+exports[`SplitText-component WordElement-prop has access to current word index if its a function component 1`] = `
+<div>
+  <span>
+    <p>
+      I'm current word's index 0
+    </p>
+    <div>
+      f
+    </div>
+    <div>
+      o
+    </div>
+    <div>
+      o
+    </div>
+  </span>
+  <div>
+     
+  </div>
+  <span>
+    <p>
+      I'm current word's index 1
+    </p>
+    <div>
+      b
+    </div>
+    <div>
+      a
+    </div>
+    <div>
+      r
+    </div>
+  </span>
+  <div>
+     
+  </div>
+  <span>
+    <p>
+      I'm current word's index 2
+    </p>
+    <div>
+      b
+    </div>
+    <div>
+      a
+    </div>
+    <div>
+      z
+    </div>
+  </span>
+</div>
+`;
+
+exports[`SplitText-component renders with children prop 1`] = `
+<div>
+  <div>
+    <div>
+      f
+    </div>
+    <div>
+      o
+    </div>
+    <div>
+      o
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SplitText-component sets rest of the props to wrapper element 1`] = `
+<p
+  aria-label="first second third"
+  className="foo"
+  id="1"
+  onclick={[Function]}
 >
   <span
-    aria-hidden={true}
-    className="word "
-    data-word="foo"
-    style={
-      Object {
-        "display": "inline-flex",
-      }
-    }
+    i={0}
   >
     <span
-      aria-hidden={true}
-      className="char "
+      i={0}
       key="0"
     >
       f
     </span>
     <span
-      aria-hidden={true}
-      className="char "
+      i={1}
       key="1"
+    >
+      i
+    </span>
+    <span
+      i={2}
+      key="2"
+    >
+      r
+    </span>
+    <span
+      i={3}
+      key="3"
+    >
+      s
+    </span>
+    <span
+      i={4}
+      key="4"
+    >
+      t
+    </span>
+  </span>
+  <span />
+  <span
+    i={1}
+  >
+    <span
+      i={0}
+      key="0"
+    >
+      s
+    </span>
+    <span
+      i={1}
+      key="1"
+    >
+      e
+    </span>
+    <span
+      i={2}
+      key="2"
+    >
+      c
+    </span>
+    <span
+      i={3}
+      key="3"
     >
       o
     </span>
     <span
-      aria-hidden={true}
-      className="char "
-      key="2"
+      i={4}
+      key="4"
     >
-      o
+      n
+    </span>
+    <span
+      i={5}
+      key="5"
+    >
+      d
     </span>
   </span>
-</div>
-`;
-
-exports[`SplitText-component renders with no props 1`] = `
-<ForwardRef
-  charClassName=""
-  charRefs={
-    Object {
-      "current": Array [],
-    }
-  }
-  charType="span"
-  className=""
-  spaceClassName=""
-  spaceHTML="&nbsp;"
-  spaceType="span"
-  type="div"
-  wordClassName=""
-  wordRefs={
-    Object {
-      "current": Array [],
-    }
-  }
-  wordType="span"
->
-  <div
-    aria-label=""
-    className="c-split-text "
-    style={
-      Object {
-        "display": "block",
-      }
-    }
-  />
-</ForwardRef>
+  <span />
+  <span
+    i={2}
+  >
+    <span
+      i={0}
+      key="0"
+    >
+      t
+    </span>
+    <span
+      i={1}
+      key="1"
+    >
+      h
+    </span>
+    <span
+      i={2}
+      key="2"
+    >
+      i
+    </span>
+    <span
+      i={3}
+      key="3"
+    >
+      r
+    </span>
+    <span
+      i={4}
+      key="4"
+    >
+      d
+    </span>
+  </span>
+</p>
 `;

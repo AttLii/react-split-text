@@ -25,11 +25,10 @@ export const SplitText = ({ children, ContainerElement, WordElement, CharElement
 } 
 
 SplitText.defaultProps = {
-  className: undefined,
   children: null,
-  ContainerElement: "div",
-  WordElement: "div",
-  CharElement: "div",
+  ContainerElement: ({ children }) => <div>{children}</div>,
+  WordElement: ({ children }) => <div>{children}</div>,
+  CharElement: ({ children }) => <div>{children}</div>,
   SpaceElement: () => <div>{" "}</div>
 }
 
