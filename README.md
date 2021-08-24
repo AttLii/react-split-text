@@ -1,106 +1,114 @@
 # arha-split-text
 
-A react component to split passed in `children`-prop into word-spans and each word-span into character-spans. This lets developers do f.e. word / character based animations for text-elements.
+A react component to split passed in `children`-prop into word elements and each word into character elements. This lets developers do f.e. word / character based animations for a text.
 
 ## Example usage
 
-For following React app:
-
-```
+``` jsx
 import React from "react";
-import SplitText from "arha-split-text";
+import { SplitText } from "arha-split-text";
 
 function App() {
-  return <SplitText>Edit src/App.js</SplitText>;
+  return <SplitText>foo bar</SplitText>;
 }
 
 export default App;
+
+// output:
+//  <div>
+//    <div>
+//      <div>f</div>
+//      <div>o</div>
+//      <div>o</div>
+//    </div>
+//    <div></div>
+//    <div>
+//      <div>b</div>
+//      <div>a</div>
+//      <div>r</div>
+//    </div>
+//  </div>
+//
 ```
 
-an output would be:
+SplitText also provides additional props, so developers can have more control over the output
 
-```
-<div
-  aria-label="Edit src/App.js"
-  class="c-split-text"
-  style="display: inline-flex; flex-wrap: wrap;"
->
-  <span
-    aria-hidden="true"
-    class="word"
-    data-word="Edit"
-    style="display: inline-block;"
-  >
-    <span class="char" aria-hidden="true">
-      E
-    </span>
-    <span class="char" aria-hidden="true">
-      d
-    </span>
-    <span class="char" aria-hidden="true">
-      i
-    </span>
-    <span class="char" aria-hidden="true">
-      t
-    </span>
-    <span aria-hidden="true" class="space" style="display: inline-block;">
-      &nbsp;
-    </span>
+```jsx
+import React from "react";
+import { SplitText } from "./arha-split-text"
+
+/**
+ * Example word component
+ */
+const Word = ({ children, i }) => (
+  <span className={`word word-${i}`}>
+    {children}
   </span>
-  <span
-    aria-hidden="true"
-    class="word"
-    data-word="src/App.js"
-    style="display: inline-block;"
-  >
-    <span class="char" aria-hidden="true">
-      s
-    </span>
-    <span class="char" aria-hidden="true">
-      r
-    </span>
-    <span class="char" aria-hidden="true">
-      c
-    </span>
-    <span class="char" aria-hidden="true">
-      /
-    </span>
-    <span class="char" aria-hidden="true">
-      A
-    </span>
-    <span class="char" aria-hidden="true">
-      p
-    </span>
-    <span class="char" aria-hidden="true">
-      p
-    </span>
-    <span class="char" aria-hidden="true">
-      .
-    </span>
-    <span class="char" aria-hidden="true">
-      j
-    </span>
-    <span class="char" aria-hidden="true">
-      s
-    </span>
+)
+
+/**
+ * Example Space component
+ */
+const Space = () => "\u00A0"
+
+/**
+ * Example Char component
+ */
+const Char = ({ children, i }) => (
+  <span className={`char char-${i}`}>
+    {children}
   </span>
-</div>
+)
+
+function App() {
+  return (
+    <SplitText
+      ContainerElement="h1" // I can be a function component as well 
+      WordElement={Word}
+      CharElement={Char}
+      SpaceElement={Space}
+      // rest are set to container element
+      className="my-cool-split-text"
+    >
+      awesome component   
+    </SplitText>
+  )
+}
+
+export default App;
+
+//  <h1 class="my-cool-split-text">
+//    <span class="word word-0">
+//      <span class="char char-0">a</span>
+//      <span class="char char-1">w</span>
+//      <span class="char char-2">e</span>
+//      <span class="char char-3">s</span>
+//      <span class="char char-4">o</span>
+//      <span class="char char-5">m</span>
+//      <span class="char char-6">e</span>
+//    </span>
+//    &nbsp;
+//    <span class="word word-1">
+//      <span class="char char-0">c</span>
+//      <span class="char char-1">o</span>
+//      <span class="char char-2">m</span>
+//      <span class="char char-3">p</span>
+//      <span class="char char-4">o</span>
+//      <span class="char char-5">n</span>
+//      <span class="char char-6">e</span>
+//      <span class="char char-7">n</span>
+//      <span class="char char-8">t</span>
+//    </span>
+//  </h1>
 ```
 
 ## Props
+| Prop                | Description                                                     | Type                          |
+| ---                 | ---                                                             | ---                           |
+| `children`          | string needed to be split                                       | string                        |
+| `ContainerElement`  | overrides default container element (by default `div`)          | string or function component  |
+| `WordElement`       | overrides default word element (by default `div`)               | string or function component  |
+| `CharElement`       | overrides default char element (by default `div`)               | string or function component  |
+| `SpaceElement`      | overrides default space element (by default `div` with `{" "}`) | string or function component  |
+| `...rest`           | rest of the props are set to container element                  | go wild                       |
 
-| Prop key       | Expected Type | Description                                                                             |
-| -------------- | ------------- | --------------------------------------------------------------------------------------- |
-| children       | string        | text wanted to be split                                                                 |
-| className      | string        | className passed to wrapper element                                                     |
-| type           | string        | wrapper element's type, f.e. `"h1"` or `"p"`. By default `div`                          |
-| wordClassName  | string        | className set to each word element                                                      |
-| wordType       | string        | word elements' type, f.e. `"h1"` or `"p"`. By default `span`                            |
-| charClassName  | string        | className set to each character element                                                 |
-| charType       | string        | char elements' type, f.e. `"h1"` or `"p"`. By default `span`                            |
-| spaceClassName | string        | className set to each space element                                                     |
-| spaceType      | string        | space elements' type, f.e. `"h1"` or `"p"`. By default `span`                           |
-| spaceHTML      | string        | a character that is used as a text content for each space element. by default `&nbsp;`  |
-| wordRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
-| charRefs       | object        | `useRef()`'s returned object. Note: use empty array when initializing the default value |
-| ...rest        |               | rest of the props are spread to wrapper element                                         |
