@@ -3,7 +3,7 @@ import React from "react"
 import Enzyme, { shallow, mount, render } from "enzyme"
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import { SplitText } from "./index"
+import { SplitText } from "./arha-split-text"
 
 Enzyme.configure({ adapter: new Adapter() })
 
