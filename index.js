@@ -1,171 +1,54 @@
-const { createElement, Fragment, forwardRef, useEffect } = require("react")
-const PropTypes = require("prop-types")
+import PropTypes from "prop-types"
+import React, { Fragment } from "react"
 
-const SplitText = forwardRef((props, ref) => {
-	const {
-		children,
+export const SplitText = ({ children, ContainerElement, WordElement, CharElement, SpaceElement, ...rest }) => {
+  if (!children) return null
 
-		className,
-		type,
+  const words = children.split(" ")
 
-		wordClassName,
-		wordType,
-
-		charClassName,
-		charType,
-
-		spaceClassName,
-		spaceType,
-		spaceHTML,
-
-		wordRefs,
-		charRefs,
-
-		...rest
-	} = props
-
-	const wrapperCN = `c-split-text ${className}`
-	const wrapperProps = {
-		"aria-label": children,
-		className: wrapperCN,
-		ref,
-		style: {
-			display: "block"
-		},
-		...rest
-	}
-
-	const wordDefaultCN = "word"
-	const wordProps = {
-		"aria-hidden": true,
-		className: `${wordDefaultCN} ${wordClassName}`,
-		style: {
-			display: "inline-flex"
-		}
-	}
-
-	const charDefaultCN = "char"
-	const charProps = {
-		className: `${charDefaultCN} ${charClassName}`,
-		"aria-hidden": true
-	}
-
-	const spaceCN = `space ${spaceClassName}`
-	// space is rendered using this element
-	const spaceElement = createElement(
-		spaceType,
-		{
-			"aria-hidden": true,
-			className: spaceCN,
-			dangerouslySetInnerHTML: { __html: spaceHTML },
-			style: { display: "inline-block" }
-		},
-		null
-	)
-
-	// sending refs to parent component
-	useEffect(() => {
-		if (!ref || !ref.current) return
-
-		const wrapper = ref.current
-		const words = Array.from(wrapper.querySelectorAll(`.${wordDefaultCN}`))
-		if (words.length === 0) return
-		wordRefs.current = words
-
-		const chars = Array.from(wrapper.querySelectorAll(`.${charDefaultCN}`))
-		if (chars.length === 0) return
-		charRefs.current = chars
-
-		// clean parent component's refs on dismount
-		return () => {
-			wordRefs.current = []
-			charRefs.current = []
-		}
-	}, [ref, wordRefs, charRefs, wordDefaultCN, charDefaultCN])
-
-	// wrapper element
-	return createElement(
-		type,
-		wrapperProps,
-		children.split(" ").map((word, i, words) => {
-			if (word === "") return ""
-
-			const space = i === words.length - 1 ? null : spaceElement
-
-			return createElement(
-				Fragment,
-				{
-					key: i
-				},
-				createElement(
-					wordType,
-					{
-						...wordProps,
-						"data-word": word
-					},
-					word.split("").map((char, i) =>
-						createElement(
-							charType,
-							{
-								...charProps,
-								key: i
-							},
-							char
-						)
-					),
-					space
-				)
-			)
-		})
-	)
-})
+  return (
+    <ContainerElement {...rest}>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <WordElement i={i}>
+            {word.split("").map((char, j) => (
+              <CharElement key={j} i={j}>
+                {char}
+              </CharElement>
+            ))}
+          </WordElement>
+          {i !== words.length - 1 && (<SpaceElement />)}
+        </Fragment>
+      ))}
+    </ContainerElement>
+  )
+} 
 
 SplitText.defaultProps = {
-	children: "",
-
-	className: "",
-	type: "div",
-
-	wordClassName: "",
-	wordType: "span",
-
-	charClassName: "",
-	charType: "span",
-
-	spaceClassName: "",
-	spaceType: "span",
-	spaceHTML: "&nbsp;",
-
-	wordRefs: {
-		current: []
-	},
-	charRefs: {
-		current: []
-	}
+  className: undefined,
+  children: null,
+  ContainerElement: "div",
+  WordElement: "div",
+  CharElement: "div",
+  SpaceElement: () => <div>{" "}</div>
 }
 
 SplitText.propTypes = {
-	children: PropTypes.string,
-
-	className: PropTypes.string,
-	type: PropTypes.string,
-
-	wordClassName: PropTypes.string,
-	wordType: PropTypes.string,
-
-	charClassName: PropTypes.string,
-	charType: PropTypes.string,
-
-	spaceClassName: PropTypes.string,
-	spaceType: PropTypes.string,
-	spaceHTML: PropTypes.string,
-
-	wordRefs: PropTypes.shape({
-		current: PropTypes.array
-	}),
-	charRefs: PropTypes.shape({
-		current: PropTypes.array
-	})
+  children: PropTypes.string,
+  ContainerElement: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func
+  ]),
+  WordElement: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func
+  ]),
+  CharElement: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func
+  ]),
+  SpaceElement: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func
+  ]),
 }
-
-module.exports = SplitText
