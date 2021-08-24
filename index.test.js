@@ -1,200 +1,118 @@
 import 'jsdom-global/register'
 import React from "react"
-import Enzyme, { shallow, mount } from "enzyme"
+import Enzyme, { shallow, mount, render } from "enzyme"
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import SplitText from "./index"
+import { SplitText } from "./index"
 
 Enzyme.configure({ adapter: new Adapter() })
 
 describe("SplitText-component", () => {
-	it("renders with no props", () => {
-		const component = mount(<SplitText />)
+	it("Doesn't crash with no props", () => {
+		const component = render(<SplitText />)
 		expect(component).toMatchSnapshot()
 	})
 
-	it("renders correctly with foo children-prop", () => {
-		const component = shallow(<SplitText>foo</SplitText>)
+	it("renders with children prop", () => {
+		const component = render(<SplitText>foo</SplitText>)
 		expect(component).toMatchSnapshot()
 	})
 
-	it("makes wrapper by default a div", () => {
-		const wrapper = shallow(<SplitText />)
-		expect(wrapper.type()).toEqual("div")
+	it("changes container element to one passed in ContainerElement-prop (string)", () => {
+		const ContainerElement = "span"
+		const container = mount(<SplitText ContainerElement={ContainerElement}>foo</SplitText>)
+		expect(container.find("span").html()).toBeTruthy()
 	})
 
-	it("changes wrapper's type to one passed in type-prop", () => {
-		const type = "p"
-		const wrapper = shallow(<SplitText type={type} />)
-
-		expect(wrapper.type()).toEqual(type)
+	it("changes container element to one passed in ContainerElement-prop (function component)", () => {
+		const ContainerElement = ({ children }) => <h1 className="my-container">{children}</h1>
+		const container = mount(<SplitText ContainerElement={ContainerElement}>foo</SplitText>)
+		expect(container.find(".my-container").get(0)).toBeTruthy()
 	})
 
-	it("makes char-elements by default spans", () => {
-		const sentence = "h"
-		const component = mount(<SplitText>{sentence}</SplitText>)
-
-		const char = component.find(".char")
-		expect(char.type()).toEqual("span")
+	it("renders space element between words", () => {
+		const component = mount(<SplitText>foo fii</SplitText>)
+		// from 0 - 4 we got component container, word (foo) container and container for each letter 
+		expect(component.find("div").get(5).props.children).toEqual(" ")
 	})
 
-	it("makes char-elements the type passed in by charType-prop", () => {
-		const sentence = "h"
-		const component = mount(<SplitText charType="p">{sentence}</SplitText>)
-
-		const char = component.find(".char")
-		expect(char.type()).toEqual("p")
+	it("replaces space element with provided SpaceElement-prop (string)", () => {
+		const component = mount(<SplitText SpaceElement="span">foo fii</SplitText>)
+		expect(component.find("span").html()).toBeTruthy()
 	})
 
-	it("makes word-elements by default spans", () => {
-		const sentence = "s"
-		const component = mount(<SplitText>{sentence}</SplitText>)
-
-		const word = component.find(".word")
-		expect(word.type()).toEqual("span")
+	it("replaces space element with provided SpaceElement-prop (function component)", () => {
+		const SpaceElement = () => <span>&nbps; inside span better</span>
+		const component = mount(<SplitText SpaceElement={SpaceElement}>foo fii</SplitText>)
+		expect(component.find("span").html()).toBeTruthy()
 	})
 
-	it("makes word-elements the type passed in by wordType-prop", () => {
-		const sentence = "hai"
-		const component = mount(<SplitText wordType="code">{sentence}</SplitText>)
-
-		const char = component.find(".word")
-		expect(char.type()).toEqual("code")
+	it("replaces Word wrapper element with provided WordElement-prop (string)", () => {
+		const component = shallow(<SplitText WordElement="span">foo bar</SplitText>)
+		expect(component.find("span")).toHaveLength(2)
 	})
 
-	it("makes space-elements by default spans", () => {
-		const sentence = "s s"
-		const component = mount(<SplitText>{sentence}</SplitText>)
-
-		const space = component.find(".space")
-		expect(space.type()).toEqual("span")
+	it("replaces Word wrapper element with provided WordElement-prop (function component)", () => {
+		const WordElement = ({ children }) => <span className="my-component__word">{children}</span>
+		const component = shallow(<SplitText WordElement={WordElement}>foo bar</SplitText>)
+		expect(component.find(WordElement)).toHaveLength(2)
 	})
 
-	it("makes space-elements the type passed in by spaceType-prop", () => {
-		const sentence = "s s"
-		const component = mount(<SplitText spaceType="h6">{sentence}</SplitText>)
-
-		const space = component.find(".space")
-		expect(space.type()).toEqual("h6")
-	})
-
-	it("creates children element for each word provided in children-prop", () => {
-		const sentence = "Foo bar baz"
-		const wordAmount = 3
-
-		const component = mount(<SplitText>{sentence}</SplitText>)
-		const wordElements = component.find(".word")
-
-		expect(wordElements.length).toBe(wordAmount)
-	})
-
-	it("creates children element for each character provided in children-prop", () => {
-		const sentence = "Foo bar baz"
-		const charAmount = 9
-
-		const component = mount(<SplitText>{sentence}</SplitText>)
-		const charElements = component.find(".char")
-		expect(charElements.length).toBe(charAmount)
-	})
-
-	it("creates space element between word elements", () => {
-		const sentence = "Foo bar baz"
-		const spaceAmount = 2
-
-		const component = mount(<SplitText>{sentence}</SplitText>)
-		const spaceElements = component.find(".space")
-
-		expect(spaceElements.length).toBe(spaceAmount)
-	})
-
-	it("creates space element at the end of each word element, except last one", () => {
-		const sentence = "Foo bar baz"
-
-		const component = mount(<SplitText>{sentence}</SplitText>)
-		const spaceElementParents = component.find(".space").parent()
-
-		const firstParent = spaceElementParents.at(0)
-		expect(firstParent.prop("data-word")).toBe("Foo")
-		const secondParent = spaceElementParents.at(1)
-		expect(secondParent.prop("data-word")).toBe("bar")
-		const shouldntExist = spaceElementParents.at(2)
-		expect(shouldntExist.exists()).toBeFalsy()
-	})
-
-	it("passes className-prop to wrapper element", () => {
-		const className = "foo"
-		const wrapper = shallow(<SplitText className={className} />)
-
-		expect(wrapper.hasClass(className)).toBe(true)
-	})
-
-	it("passes wordClassName-prop to word-elements", () => {
-		const sentence = "Foo bar baz"
-		const wordsWithProvidedClassName = 3
-		const wordClassName = "foo-word"
-
-		const component = mount(
-			<SplitText wordClassName={wordClassName}>{sentence}</SplitText>
+	it("WordElement-prop has access to current word index if its a function component", () => {
+		const WordElement = ({ children, i }) => (
+			<span>
+				<p>
+					I'm current word's index {i}
+				</p>
+				{children}
+			</span>
 		)
-
-		const wordElements = component.find(`.word.${wordClassName}`)
-
-		expect(wordElements.length).toBe(wordsWithProvidedClassName)
+		const component = render(<SplitText WordElement={WordElement}>foo bar baz</SplitText>)
+		expect(component).toMatchSnapshot()
 	})
 
-	it("passes charClassName-prop to char-elements", () => {
-		const sentence = "Foo bar baz baa"
-		const charsWithProvidedClassName = 12
-		const charClassName = "foo-char"
+	it("replaces Character's wrapper element with provided CharElement-prop (string)", () => {
+		const component = shallow(<SplitText CharElement="span">foo bar</SplitText>)
+		expect(component.find("span")).toHaveLength(6)
+	})
 
-		const component = mount(
-			<SplitText charClassName={charClassName}>{sentence}</SplitText>
+	it("replaces Character wrapper element with provided CharElement-prop (function component)", () => {
+		const CharElement = ({ children }) => <span className="my-component__char">{children}</span>
+		const component = shallow(<SplitText CharElement={CharElement}>foo</SplitText>)
+		expect(component.find(CharElement)).toHaveLength(3)
+	})
+
+	it("CharElement-prop has access to current character's index inside the word if its a function component", () => {
+		const CharElement = ({ children, i }) => (
+			<span>
+				<span>
+					current index of the character inside the word: {i}
+				</span>
+				{children}
+			</span>
 		)
-
-		const charElements = component.find(`.char.${charClassName}`)
-
-		expect(charElements.length).toBe(charsWithProvidedClassName)
+		const component = render(<SplitText CharElement={CharElement}>foo</SplitText>)
+		expect(component).toMatchSnapshot()
 	})
 
-	it("passes spaceClassName-prop to space-elements", () => {
-		const sentence = "Foo bar baz baa"
-		const spacesWithProvidedClassName = 3
-		const spaceClassName = "foo-space"
-
-		const component = mount(
-			<SplitText spaceClassName={spaceClassName}>{sentence}</SplitText>
+	it("sets rest of the props to wrapper element", () => {
+		const rest = {
+			className: "foo",
+			id: "1",
+			onclick: () => {},
+			"aria-label": "first second third"
+		}
+		const component = shallow(
+			<SplitText
+				ContainerElement="p"
+				WordElement="span"
+				CharElement="span"
+				SpaceElement="span"
+				{...rest}
+			>
+				first second third
+			</SplitText>
 		)
-
-		const spaceElements = component.find(`.space.${spaceClassName}`)
-
-		expect(spaceElements.length).toBe(spacesWithProvidedClassName)
-	})
-
-	/**
-	 * This test has a flaw that cannot be fixed right now.
-	 * Selecting text content that is &npbs; returns what we have in defaultSpaceHTML variable.
-	 * @https://github.com/enzymejs/enzyme/issues/1349
-	 **/
-	it("uses default spaceHTML-value if not specified in props", () => {
-		const sentence = "Foo bar"
-		const defaultSpaceHTML = "\u00a0"
-
-		const component = mount(<SplitText>{sentence}</SplitText>)
-		const spaceElement = component.find(".space")
-
-		expect(spaceElement.text()).toEqual(defaultSpaceHTML)
-	})
-
-	it("uses passed in spaceHTML-prop as a space-character", () => {
-		const sentence = "Foo bar banana"
-		const spaceHTML = "FOO_BANANAS"
-
-		const component = mount(
-			<SplitText spaceHTML={spaceHTML}>{sentence}</SplitText>
-		)
-
-		const spaceElements = component.find(".space")
-		expect(spaceElements.at(0).text()).toEqual("FOO_BANANAS")
-		expect(spaceElements.at(1).text()).toEqual("FOO_BANANAS")
+		expect(component).toMatchSnapshot()
 	})
 })
