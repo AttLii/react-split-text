@@ -109,6 +109,6 @@ export default App;
 | `ContainerElement`  | overrides default container element (by default `div`)          | string or function component  |
 | `WordElement`       | overrides default word element (by default `div`)               | string or function component  |
 | `CharElement`       | overrides default char element (by default `div`)               | string or function component  |
-| `SpaceElement`      | overrides default space element (by default `div` with `{" "}`) | string or function component  |
+| `SpaceElement`      | overrides default space element (by default `<div>{" "}</div>`) | string or function component  |
 | `...rest`           | rest of the props are set to container element                  | go wild                       |
 
